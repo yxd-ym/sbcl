@@ -409,6 +409,7 @@ case $uname_arch in
     aarch64) guessed_sbcl_arch=arm64 ;;
     riscv32) guessed_sbcl_arch=riscv xlen=32;;
     riscv64) guessed_sbcl_arch=riscv xlen=64;;
+    loongarch64) guessed_sbcl_arch=loong64 ;;
     *)
         # If we're not building on a supported target architecture, we
         # we have no guess, but it's not an error yet, since maybe
@@ -485,7 +486,7 @@ if $fancy
 then
     # If --fancy, enable threads on platforms where they can be built.
     case $sbcl_arch in
-        x86|x86-64|ppc|arm64|riscv)
+        x86|x86-64|ppc|arm64|riscv|loong64)
 	    if [ "$sbcl_os" = "dragonflybsd" ]
 	    then
 		echo "No threads on this platform."
@@ -509,6 +510,13 @@ else
     case $sbcl_arch in
         arm64|riscv)
             WITH_FEATURES="$WITH_FEATURES :sb-thread"
+    esac
+    case $sbcl_arch in
+        loong64)
+            case $sbcl_os in
+                linux)
+                    WITH_FEATURES="$WITH_FEATURES :sb-thread"
+            esac
     esac
 fi
 
@@ -565,11 +573,11 @@ case "$sbcl_os" in
     linux)
         printf ' :unix :linux :elf' >> $ltf
         case "$sbcl_arch" in
-          arm64 | ppc64 | x86 | x86-64)
+          arm64 | ppc64 | x86 | x86-64 | loong64)
 	        printf ' :gcc-tls' >> $ltf
         esac
         case "$sbcl_arch" in
-          arm | arm64 | ppc | ppc64 | x86 | x86-64)
+          arm | arm64 | ppc | ppc64 | x86 | x86-64 | loong64)
 	        printf ' :use-sys-mmap' >> $ltf
         esac
 
