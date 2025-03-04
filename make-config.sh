@@ -409,6 +409,7 @@ case $uname_arch in
     aarch64) guessed_sbcl_arch=arm64 ;;
     riscv32) guessed_sbcl_arch=riscv xlen=32;;
     riscv64) guessed_sbcl_arch=riscv xlen=64;;
+    loongarch64) guessed_sbcl_arch=loong64 ;;
     *)
         # If we're not building on a supported target architecture, we
         # we have no guess, but it's not an error yet, since maybe
