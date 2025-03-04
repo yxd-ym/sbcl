@@ -506,6 +506,13 @@ else
                 linux|darwin)
                     WITH_FEATURES="$WITH_FEATURES :sb-thread"
             esac
+            ;;
+        loong64)
+            case $sbcl_os in
+                linux)
+                    WITH_FEATURES="$WITH_FEATURES :sb-thread"
+            esac
+            ;;
     esac
     case $sbcl_arch in
         arm64|riscv)
@@ -570,7 +577,7 @@ case "$sbcl_os" in
 	        printf ' :gcc-tls' >> $ltf
         esac
         case "$sbcl_arch" in
-          arm | arm64 | ppc | ppc64 | x86 | x86-64)
+          arm | arm64 | loong64 | ppc | ppc64 | x86 | x86-64)
 	        printf ' :use-sys-mmap' >> $ltf
         esac
 
